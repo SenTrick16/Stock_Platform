@@ -1,20 +1,45 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { VerticalGraph } from "./VerticalGraph";
 
 // import {holdings} from "../data/data";
 
 const Holdings = () => {
   const [allHoldings, setAllHoldings] = useState([]);
+  const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3002/allHoldings").then((res) => {
-      setAllHoldings(res.data);
-    });
+    axios
+      .get("http://localhost:3002/allHoldings")
+      .then((res) => {
+        setAllHoldings(res.data);
+        setLoadError("");
+      })
+      .catch((error) => {
+        console.error("Unable to load holdings:", error);
+        setLoadError(
+          "Unable to load holdings. Make sure the backend and MongoDB are running."
+        );
+      });
   }, []);
+
+const labels = allHoldings.map((subArray) => subArray["name"]);
+
+const data={
+  labels,
+  datasets: [
+    {
+      label: "Stock Price",
+      data: allHoldings.map((stock) => stock.price),
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+  ],
+};
 
   return (
     <>
       <h3 className="title">Holdings ({allHoldings.length})</h3>
+      {loadError && <p className="error">{loadError}</p>}
 
       <div className="order-table">
         <table>
@@ -76,6 +101,8 @@ const Holdings = () => {
           <p>P&L</p>
         </div>
       </div>
+
+      <VerticalGraph data={data} />  
     </>
   );
 };
