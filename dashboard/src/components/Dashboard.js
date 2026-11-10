@@ -8,7 +8,7 @@ import Holdings from './Holdings';
 import Orders from './Orders';
 import Positions from './Positions';
 import Summary from './Summary';
-import { GeneralContextProvider } from '../context/GeneralContext';
+import { GeneralContextProvider } from './GeneralContext';
 import WatchList from './WatchList';
 
 const Dashboard = () => {
