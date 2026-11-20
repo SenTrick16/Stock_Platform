@@ -15,6 +15,10 @@ import { DoughnutChart } from "./DoughnoutChart";
 const labels=watchlist.map((subArray) => subArray["name"]);
 
 const WatchList = () => {
+  const [query, setQuery] = useState("");
+  const filtered = watchlist.filter((s) =>
+    s.name.toLowerCase().includes(query.toLowerCase())
+  );
 
   const data ={
     labels,
@@ -52,12 +56,14 @@ const WatchList = () => {
           id="search"
           placeholder="Search eg:infy, bse, nifty fut weekly, gold mcx"
           className="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
-        <span className="counts"> {watchlist.length} / 50</span>
+        <span className="counts"> {filtered.length} / 50</span>
       </div>
 
       <ul className="list">
-        {watchlist.map((stock, index) => {
+        {filtered.map((stock, index) => {
           return(
           <WatchListItem stock={stock} key={index} />)
         })}
@@ -102,7 +108,7 @@ const WatchListItem = ({stock}) => {
 }
 
 const WatchListActions = ({uid}) => {
-  const { openBuyWindow } = useContext(GeneralContext);
+  const { openBuyWindow, openSellWindow } = useContext(GeneralContext);
 
   return <span className='actions' style={{ display: "flex" }}>
     <span>
@@ -114,7 +120,7 @@ const WatchListActions = ({uid}) => {
       <Tooltip
       title='Sell (S)' placement='top' arrow TransitionComponent={Grow}
       >
-        <button className='sell'>Sell</button>
+        <button className='sell' onClick={() => openSellWindow(uid)}>Sell</button>
       </Tooltip>
       <Tooltip
       title='Analytics (A)' placement='top' arrow TransitionComponent={Grow}

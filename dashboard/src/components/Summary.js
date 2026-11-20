@@ -1,6 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Summary = () => {
+  const [holdings, setHoldings] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3002/allHoldings")
+      .then((res) => setHoldings(res.data))
+      .catch((err) => console.error("Summary: failed to load holdings", err));
+  }, []);
+
+  // Compute holdings summary dynamically
+  const totalInvestment = holdings.reduce(
+    (sum, s) => sum + (Number(s.qty) || 0) * (Number(s.avg) || 0),
+    0
+  );
+  const totalCurrentValue = holdings.reduce(
+    (sum, s) => sum + (Number(s.qty) || 0) * (Number(s.price) || 0),
+    0
+  );
+  const totalPnL = totalCurrentValue - totalInvestment;
+  const pnlPercent =
+    totalInvestment !== 0
+      ? ((totalPnL / totalInvestment) * 100).toFixed(2)
+      : "0.00";
+  const isPnLProfit = totalPnL >= 0;
+
+  // Format large numbers as compact strings (e.g. 29875.55 → "29.88k")
+  const toCompact = (val) => {
+    if (Math.abs(val) >= 1000) {
+      return (val / 1000).toFixed(2) + "k";
+    }
+    return val.toFixed(2);
+  };
+
   return (
     <>
       <div className="username">
@@ -34,13 +68,16 @@ const Summary = () => {
 
       <div className="section">
         <span>
-          <p>Holdings (13)</p>
+          <p>Holdings ({holdings.length})</p>
         </span>
 
         <div className="data">
           <div className="first">
-            <h3 className="profit">
-              1.55k <small>+5.20%</small>{" "}
+            <h3 className={isPnLProfit ? "profit" : "loss"}>
+              {toCompact(Math.abs(totalPnL))}{" "}
+              <small>
+                {isPnLProfit ? "+" : "-"}{Math.abs(Number(pnlPercent)).toFixed(2)}%
+              </small>{" "}
             </h3>
             <p>P&L</p>
           </div>
@@ -48,10 +85,10 @@ const Summary = () => {
 
           <div className="second">
             <p>
-              Current Value <span>31.43k</span>{" "}
+              Current Value <span>{toCompact(totalCurrentValue)}</span>{" "}
             </p>
             <p>
-              Investment <span>29.88k</span>{" "}
+              Investment <span>{toCompact(totalInvestment)}</span>{" "}
             </p>
           </div>
         </div>

@@ -183,6 +183,14 @@
   .btn-blue {
     background: #4184f3;
   }
+
+  .btn-red {
+    background: #e05263;
+  }
+
+  .btn-red:hover {
+    background: #e87a87;
+  }
   
   /* sudo selectors */
   .tab button::after {

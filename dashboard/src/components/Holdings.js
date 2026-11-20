@@ -36,6 +36,21 @@ const data={
   ],
 };
 
+  // Compute summary dynamically from holdings data
+  const totalInvestment = allHoldings.reduce((sum, stock) => {
+    return sum + (Number(stock.qty) || 0) * (Number(stock.avg) || 0);
+  }, 0);
+
+  const totalCurrentValue = allHoldings.reduce((sum, stock) => {
+    return sum + (Number(stock.qty) || 0) * (Number(stock.price) || 0);
+  }, 0);
+
+  const totalPnL = totalCurrentValue - totalInvestment;
+  const pnlPercent = totalInvestment !== 0
+    ? ((totalPnL / totalInvestment) * 100).toFixed(2)
+    : "0.00";
+  const isPnLProfit = totalPnL >= 0;
+
   return (
     <>
       <h3 className="title">Holdings ({allHoldings.length})</h3>
@@ -85,19 +100,17 @@ const data={
 
       <div className="row">
         <div className="col">
-          <h5>
-            29,875.<span>55</span>{" "}
-          </h5>
+          <h5>{totalInvestment.toFixed(2)}</h5>
           <p>Total investment</p>
         </div>
         <div className="col">
-          <h5>
-            31,428.<span>95</span>{" "}
-          </h5>
+          <h5>{totalCurrentValue.toFixed(2)}</h5>
           <p>Current value</p>
         </div>
         <div className="col">
-          <h5>1,553.40 (+5.20%)</h5>
+          <h5 className={isPnLProfit ? "profit" : "loss"}>
+            {totalPnL.toFixed(2)} ({isPnLProfit ? "+" : ""}{pnlPercent}%)
+          </h5>
           <p>P&L</p>
         </div>
       </div>

@@ -3,6 +3,8 @@ import {Routes, Route} from 'react-router-dom';
 
 import Apps from './App';
 import Funds from './Funds';
+import AddFunds from './AddFunds';
+import WithdrawFunds from './WithdrawFunds';
 import Holdings from './Holdings';
 
 import Orders from './Orders';
@@ -22,6 +24,8 @@ const Dashboard = () => {
                     <Route exact path="/" element={<Summary />} />
                     <Route exact path="/apps" element={<Apps />} />
                     <Route exact path="/funds" element={<Funds />} />
+                    <Route exact path="/funds/add" element={<AddFunds />} />
+                    <Route exact path="/funds/withdraw" element={<WithdrawFunds />} />
                     <Route exact path="/holdings" element={<Holdings />} />
                     <Route exact path="/orders" element={<Orders />} />
                     <Route exact path="/positions" element={<Positions />} />
