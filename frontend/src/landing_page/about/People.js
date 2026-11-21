@@ -8,7 +8,7 @@ function People() {
                 
                 <div className='col-1'></div>
                 <div className='col-5 text-center text-muted'>
-                    <img src='images/nithinKamath.jpg' style={{borderRadius:"100%", width:"60%"}} />
+                    <img src='images/nithinKamath.jpg' alt="Nithin Kamath" style={{borderRadius:"100%", width:"60%"}} />
                     <h4 className='mt-5 text-muted'>
                         Nithin kamath
                     </h4>
