@@ -6,7 +6,7 @@ const Summary = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3002/allHoldings")
+      .get("https://stock-platform-166c.onrender.com/allHoldings")
       .then((res) => setHoldings(res.data))
       .catch((err) => console.error("Summary: failed to load holdings", err));
   }, []);

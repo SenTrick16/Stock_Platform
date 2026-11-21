@@ -25,7 +25,7 @@ function Login() {
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:3002/auth/login", {
+      const res = await axios.post("https://stock-platform-166c.onrender.com/auth/login", {
         email,
         password,
       });
