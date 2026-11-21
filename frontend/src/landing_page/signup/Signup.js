@@ -126,9 +126,9 @@ function Signup() {
 
         <p style={styles.loginHint}>
           Already have an account?{" "}
-          <Link to="/login" style={styles.loginLink}>
+          <a href="https://stock-platform-16sd.netlify.app/login" style={styles.loginLink}>
             Log in
-          </Link>
+          </a>
         </p>
       </div>
     </div>
