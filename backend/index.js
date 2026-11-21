@@ -13,6 +13,9 @@ const {HoldingsModel}=require('./model/HoldingsModel');
 const {OrdersModel}=require('./model/OrdersModel');
 const {PositionsModel}=require('./model/PositionsModel');
 
+const authRoutes = require('./routes/authRoutes');
+const authMiddleware = require('./middleware/auth');
+
 const PORT=process.env.port || 3002;
 const uri=process.env.MONGO_URL;
 
@@ -22,6 +25,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Auth routes
+app.use('/auth', authRoutes);
 
 // app.get('/addHoldings', async(req,res)=>{
 //     let tempHoldings =  [
@@ -196,21 +201,21 @@ app.use(bodyParser.json());
 
 // });
 
-app.get("/allHoldings", async (req, res) => {
+app.get("/allHoldings", authMiddleware, async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
   res.json(allHoldings);
 });
 
-app.get("/allPositions", async (req, res) => {
+app.get("/allPositions", authMiddleware, async (req, res) => {
   let allPositions = await PositionsModel.find({});
   res.json(allPositions);
 });
-app.get("/allOrders", async (req, res) => {
+app.get("/allOrders", authMiddleware, async (req, res) => {
   let allOrders = await OrdersModel.find({});
   res.json(allOrders);
 });
 
-app.post("/newOrder", async (req, res) => {
+app.post("/newOrder", authMiddleware, async (req, res) => {
   let newOrder = new OrdersModel({
     name: req.body.name,
     qty: req.body.qty,
