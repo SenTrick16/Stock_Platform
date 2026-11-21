@@ -40,7 +40,7 @@ function Signup() {
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       // Redirect to dashboard
-      window.location.href = "http://localhost:3001";
+      window.location.href = "https://stock-platform-16sd.netlify.app";
     } catch (err) {
       const msg =
         err.response?.data?.message || "Registration failed. Please try again.";

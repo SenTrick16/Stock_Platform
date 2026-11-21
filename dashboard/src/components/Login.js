@@ -104,7 +104,7 @@ function Login() {
 
         <p style={styles.hint}>
           Don't have an account?{" "}
-          <a href="http://localhost:3000/signup" style={styles.link}>
+          <a href="https://stock-platform-16s.netlify.app/signup" style={styles.link}>
             Sign up free
           </a>
         </p>
